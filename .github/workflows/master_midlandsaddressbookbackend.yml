@@ -64,7 +64,7 @@ jobs:
           USERNAME=$(echo "$PUBLISH_PROFILE" | grep -oP 'userName="\K[^"]+')
           PASSWORD=$(echo "$PUBLISH_PROFILE" | grep -oP 'userPWD="\K[^"]+')
           
-          curl -sS -X POST "https://MidlandsAddressBookBackend.scm.azurewebsites.net/api/command" \
+          curl -sS -X POST "https://midlandsaddressbookbackend-bhanfjdscpbcdcch.canadacentral-01.azurewebsites.net/api/command" \
             -u "$USERNAME:$PASSWORD" \
             -H "Content-Type: application/json" \
             -d '{
