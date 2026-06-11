@@ -1,9 +1,8 @@
 import path from 'node:path';
 import Database from 'better-sqlite3';
 
-export const db = new Database('addressbook.db');
-
-const dbPath = path.resolve('addressbook.db');
+const dbPath = process.env.DB_PATH ?? 'addressbook.db';
+export const db = new Database(dbPath);
 
 console.log(`Using SQLite database at: ${dbPath}`);
 
