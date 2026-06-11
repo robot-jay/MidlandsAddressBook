@@ -160,6 +160,29 @@ I approached the solution incrementally:
 
 This allowed each layer to be tested independently before moving to the next.
 
+## Security Considerations
+
+This application intentionally does not include authentication because the exercise requirements state that authentication is not necessary.
+
+Security considerations included in this implementation:
+
+- API request validation using Fastify JSON schemas
+- Parameter validation for contact IDs
+- SQL parameter binding through prepared statements
+- CORS restricted to the deployed frontend origin
+- No secrets committed to source control
+- Environment-specific configuration for deployed API URLs and database path
+
+For production, I would add:
+
+- Authentication and authorization
+- Managed relational database storage instead of SQLite
+- Rate limiting
+- Request logging and monitoring
+- Centralized error handling without exposing internal details
+- HTTPS-only access
+- More complete automated test coverage
+
 ## Future Improvements
 
 Given additional time, I would consider:
