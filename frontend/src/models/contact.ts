@@ -1,0 +1,11 @@
+export interface Contact {
+  id: number;
+  firstName: string;
+  lastName: string;
+  address: string;
+  city: string;
+  state: string;
+  zipCode: string;
+}
+
+export type ContactInput = Omit<Contact, 'id'>;
