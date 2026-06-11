@@ -1,4 +1,5 @@
 import Fastify from 'fastify';
+import cors from '@fastify/cors';
 import swagger from '@fastify/swagger';
 import swaggerUi from '@fastify/swagger-ui';
 
@@ -10,6 +11,18 @@ import { ContactService } from './services/contact-service';
 async function main() {
   const app = Fastify({
     logger: true,
+  });
+  
+  const allowedOrigins = (process.env.CORS_ORIGINS ?? '')
+  .split(',')
+  .map(origin => origin.trim())
+  .filter(Boolean);
+
+  await app.register(cors, {
+    origin: allowedOrigins.length > 0
+      ? allowedOrigins
+      : ['http://localhost:5173'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
   });
 
   await app.register(swagger, {
