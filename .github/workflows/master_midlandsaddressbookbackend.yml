@@ -28,7 +28,6 @@ jobs:
           npm ci
           npm run build --if-present
           npm run test --if-present
-          npm prune --omit=dev
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
@@ -56,3 +55,19 @@ jobs:
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           package: .
+
+      - name: Run one-time database seed
+        shell: bash
+        env:
+          PUBLISH_PROFILE: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+        run: |
+          USERNAME=$(echo "$PUBLISH_PROFILE" | grep -oP 'userName="\K[^"]+')
+          PASSWORD=$(echo "$PUBLISH_PROFILE" | grep -oP 'userPWD="\K[^"]+')
+          
+          curl -sS -X POST "https://MidlandsAddressBookBackend.scm.azurewebsites.net/api/command" \
+            -u "$USERNAME:$PASSWORD" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "command": "npm run seed",
+              "dir": "/home/site/wwwroot"
+            }'
