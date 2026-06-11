@@ -112,7 +112,7 @@ onMounted(loadContacts);
     <header class="page-header">
       <div>
         <h1>Address Book</h1>
-        <p>Manage contacts for the Midlands address book demo.</p>
+        <p>Manage contacts for Midlands Testing.</p>
       </div>
     </header>
 
@@ -310,5 +310,16 @@ onMounted(loadContacts);
 .danger-button {
   background: #b00020;
   color: white;
+}
+
+tbody tr:nth-child(even) {
+  background: #f8f8f8;
+}
+
+button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }
 </style>
