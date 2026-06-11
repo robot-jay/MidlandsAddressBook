@@ -58,9 +58,9 @@ jobs:
           package: .
 
       - name: Verify faker exists
-        working-directory: backend
         run: |
-          ls node_modules
+          pwd
+          ls
           ls node_modules/@faker-js
 
       - name: Run one-time database seed
