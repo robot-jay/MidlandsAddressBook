@@ -61,10 +61,17 @@ jobs:
         env:
           PUBLISH_PROFILE: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
         run: |
-          USERNAME=$(echo "$PUBLISH_PROFILE" | grep -oP 'userName="\K[^"]+')
-          PASSWORD=$(echo "$PUBLISH_PROFILE" | grep -oP 'userPWD="\K[^"]+')
-          
-          curl -sS -X POST "https://midlandsaddressbookbackend-bhanfjdscpbcdcch.scm.azurewebsites.net" \
+          USERNAME=$(echo "$PUBLISH_PROFILE" | grep -oP 'userName="\K[^"]+' | head -n 1)
+          PASSWORD=$(echo "$PUBLISH_PROFILE" | grep -oP 'userPWD="\K[^"]+' | head -n 1)
+          PUBLISH_URL=$(echo "$PUBLISH_PROFILE" | grep -oP 'publishUrl="\K[^"]+' | head -n 1)
+
+          echo "Publish URL from profile: $PUBLISH_URL"
+
+          SCM_HOST=$(echo "$PUBLISH_URL" | sed 's|https://||' | cut -d':' -f1)
+
+          echo "SCM host: $SCM_HOST"
+
+          curl -v -X POST "https://$SCM_HOST/api/command" \
             -u "$USERNAME:$PASSWORD" \
             -H "Content-Type: application/json" \
             -d '{
