@@ -2,6 +2,8 @@ import Fastify from 'fastify';
 import cors from '@fastify/cors';
 import swagger from '@fastify/swagger';
 import swaggerUi from '@fastify/swagger-ui';
+import helmet from '@fastify/helmet';
+import rateLimit from '@fastify/rate-limit';
 
 import { db } from './db/database';
 import { contactRoutes } from './routes/contact-routes';
@@ -11,6 +13,14 @@ import { ContactService } from './services/contact-service';
 async function main() {
   const app = Fastify({
     logger: true,
+    bodyLimit: 10 * 1024
+  });
+
+  await app.register(helmet);
+
+  await app.register(rateLimit, {
+    max: 100,
+    timeWindow: '1 minute'
   });
   
   const allowedOrigins = (process.env.CORS_ORIGINS ?? '')
