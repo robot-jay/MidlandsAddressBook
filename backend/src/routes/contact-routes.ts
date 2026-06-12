@@ -6,12 +6,12 @@ const contactResponseSchema = {
   type: 'object',
   properties: {
     id: { type: 'number' },
-    firstName: { type: 'string' },
-    lastName: { type: 'string' },
-    address: { type: 'string' },
-    city: { type: 'string' },
-    state: { type: 'string' },
-    zipCode: { type: 'string' }
+    firstName: { type: 'string', minLength: 1, maxLength: 100 },
+    lastName: { type: 'string', minLength: 1, maxLength: 100 },
+    address: { type: 'string', minLength: 1, maxLength: 255 },
+    city: { type: 'string', minLength: 1, maxLength: 100 },
+    state: { type: 'string', minLength: 2, maxLength: 2 },
+    zipCode: { type: 'string', minLength: 5, maxLength: 10 }
   }
 } as const;
 
@@ -119,4 +119,8 @@ export async function contactRoutes(
       return reply.code(204).send();
     }
   );
+
+  fastify.get('/health', async () => ({
+    status: 'ok'
+  }));
 }
